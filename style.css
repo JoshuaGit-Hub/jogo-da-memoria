@@ -3,6 +3,7 @@
 *{
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body{
@@ -53,34 +54,90 @@ body{
     margin-top: 10px;
 }
 
-.frente{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.carta{
+    width: 150px;
     height: 200px;
-    width: 135px;
-    background-color: antiquewhite;
-    border-radius: 15px;
-    text-align: center;
-    padding: 10px;
-    font-size: 0.9em;
-    display: none;
+    perspective: 1000px;
     cursor: pointer;
+}
+
+.carta-inner{
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.frente, .verso{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+    border: 5px solid black;
+    box-shadow: 1px 1px 9px rgba(0, 0, 0, 0.436);
+}
+
+.carta.virada, .carta.girar {
+    cursor: default !important;
+}
+
+.carta {
+    transition: transform 0.2s ease-in-out;
+}
+
+.carta:not(.virada):not(.girar):hover {
+    animation: tremerScale 0.3s;
+}
+
+@keyframes tremerScale {
+    0% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(5deg) scale(1.05); }
+    50% { transform: rotate(-5deg) scale(1.05); }
+    75% { transform: rotate(3deg) scale(1.05); }
+    100% { transform: rotate(0deg) scale(1); }
+}
+.frente{
+    background-color: antiquewhite;
+    transform: rotateY(180deg);
 }
 
 .verso{
-    height: 200px;
-    width: 135px;
-    background-color: antiquewhite;
-    border-radius: 15px;
-    padding: 10px;
+    background-color: #d1c4b2;
+}
+
+.carta.virada .carta-inner{
+    transform: rotateY(180deg);
+}
+
+.girar {
+    animation: girarCartas 2s linear;
+}
+
+@keyframes girarCartas {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#reiniciar{
     cursor: pointer;
+    box-shadow: 1px 1px 5px black;
+    transition: box-shadow .5s ease-in-out,transform .1s ease-in-out,background-color .5s ease-in-out;
 }
 
-.carta.virada .frente {
-    display: block;
+#reiniciar:hover{
+    background-color: rgb(186, 186, 186);
+    color: rgb(63, 63, 63);
 }
 
-.carta.virada .verso {
-    display: none;
+#reiniciar:active{
+    transform: translateY(3px);
+    box-shadow: inset 3px 3px 10px rgba(0, 0, 0, 0.573);
+    box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.633);
 }
